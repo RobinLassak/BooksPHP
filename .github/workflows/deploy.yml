@@ -1,0 +1,29 @@
+name: Deploy to Endora (BooksPHP)
+on:
+  push:
+    branches: [master]
+  workflow_dispatch: {}
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          server-dir: ${{ secrets.FTP_DIR }}BooksPH/
+          local-dir: ./
+          # necháme explicitně vypnuté pro jistotu
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            **/node_modules/**
+            **/prihlasovaci_udaje.php
