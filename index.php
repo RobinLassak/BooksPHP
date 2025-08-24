@@ -16,6 +16,34 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <style>
+        .book-card {
+            transition: transform 0.2s;
+        }
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .book-image {
+            max-width: 150px;
+            max-height: 150px;
+            object-fit: cover;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+        @media (max-width: 991.98px) {
+            .desktop-table {
+                display: none;
+            }
+        }
+        @media (min-width: 992px) {
+            .mobile-cards {
+                display: none;
+            }
+        }
+
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
@@ -39,28 +67,76 @@
         </div>
     </nav>
 <div class="container py-5">
-<h1 class="display-5">Seznam knih</h1>
-    <table class="table table-striped text-center my-5">
-        <tr>
-            <th>ISBN</th>
-            <th>Jmeno autora</th>
-            <th>Prijmeni autora</th>
-            <th>Nazev knihy</th>
-            <th>Popis</th>
-            <th>Obrazek obalu</th>
-        </tr>
-        <?php 
-            foreach ($knihy as $kniha) : ?>
-            <tr>
-                <td><?php echo htmlspecialchars($kniha->isbn); ?></td>
-                <td><?php echo htmlspecialchars($kniha->jmeno); ?></td>
-                <td><?php echo htmlspecialchars($kniha->prijmeni); ?></td>
-                <td><?php echo htmlspecialchars($kniha->nazev); ?></td>
-                <td><?php echo htmlspecialchars($kniha->popis); ?></td>
-                <td><img src="<?php echo htmlspecialchars($kniha->obrazek); ?>" alt="Obal knihy" style="max-width:200px; max-height:200px;"></td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
+    <h1 class="display-5 mb-4">Seznam knih</h1>
+    
+    <!-- Desktop table view (large screens) -->
+    <div class="desktop-table">
+        <div class="table-responsive">
+            <table class="table table-striped text-center">
+                <thead class="table-primary">
+                    <tr>
+                        <th>ISBN</th>
+                        <th>Jméno autora</th>
+                        <th>Příjmení autora</th>
+                        <th>Název knihy</th>
+                        <th>Popis</th>
+                        <th>Obrázek obalu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($knihy as $kniha) : ?>
+                    <tr>
+                        <td class="align-middle"><?php echo htmlspecialchars($kniha->isbn); ?></td>
+                        <td class="align-middle"><?php echo htmlspecialchars($kniha->jmeno); ?></td>
+                        <td class="align-middle"><?php echo htmlspecialchars($kniha->prijmeni); ?></td>
+                        <td class="align-middle"><?php echo htmlspecialchars($kniha->nazev); ?></td>
+                        <td class="align-middle"><?php echo htmlspecialchars($kniha->popis); ?></td>
+                        <td class="align-middle">
+                            <img src="<?php echo htmlspecialchars($kniha->obrazek); ?>" 
+                                 alt="Obal knihy <?php echo htmlspecialchars($kniha->nazev); ?>" 
+                                 class="img-fluid" 
+                                 style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Mobile/Tablet card view (small and medium screens) -->
+    <div class="mobile-cards">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <?php foreach ($knihy as $kniha) : ?>
+            <div class="col">
+                <div class="card h-100 book-card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <img src="<?php echo htmlspecialchars($kniha->obrazek); ?>" 
+                                     alt="Obal knihy <?php echo htmlspecialchars($kniha->nazev); ?>" 
+                                     class="img-fluid book-image rounded">
+                            </div>
+                            <div class="col-8">
+                                <h5 class="card-title"><?php echo htmlspecialchars($kniha->nazev); ?></h5>
+                                <p class="card-text">
+                                    <strong>Autor:</strong> <?php echo htmlspecialchars($kniha->jmeno . ' ' . $kniha->prijmeni); ?><br>
+                                    <strong>ISBN:</strong> <?php echo htmlspecialchars($kniha->isbn); ?>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <p class="card-text">
+                                <strong>Popis:</strong><br>
+                                <?php echo htmlspecialchars($kniha->popis); ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
 </div>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
