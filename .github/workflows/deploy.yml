@@ -17,7 +17,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           port: 21
-          server-dir: ${{ secrets.FTP_DIR }}BooksPH/
+          server-dir: ${{ secrets.FTP_DIR }}BooksPHP/
           local-dir: ./
           # necháme explicitně vypnuté pro jistotu
           dangerous-clean-slate: false
